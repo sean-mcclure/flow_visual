@@ -18,26 +18,14 @@
 create_azle(function() {
 
     az.load_scripts([
-        "ui.js",
-        "raphael.js"
+        "raphael.js",
+        "makemap.js"
     ])
 
     setTimeout(function() {
         raphael();
+        document.body.innerHTML = obj_to_html(data);
     }, 2000)
-
-document.body.innerHTML = `
-        <ul>
-  <li><a>Main Topic</a>
-    <ul>
-      <li><a>Sub 2</a></li>
-      <li><a>Sub 3</a></li>
-      <li><a>Sub 4</a></li>
-      <li><a>Sub 5</a></li>
-    </ul>
-  </li>
-</ul>
-    `;
 
 })   
 
