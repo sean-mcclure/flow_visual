@@ -201,6 +201,7 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     // create the element for display
     // this.el = $('<a href="' + this.href + '" style="width: ' + this.size + '; height: ' + this.size + ';"><div><span>' + this.name + '</span></div></a>').addClass('node').addClass(this.color);
     this.el = $('<a href="' + this.href + '"><div><span>' + this.name + '</span></div></a>').addClass('node').addClass(this.color).addClass(this.size);
+    this.el.id = Math.random().toString(36).slice(2)
     $('body').prepend(this.el);
 
 

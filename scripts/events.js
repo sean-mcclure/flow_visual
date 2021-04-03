@@ -17,6 +17,40 @@ az.hold_value.events = {
         })
     },
     get_clicked_node_data : function() {
-        return(az.hold_value.clicked_node_data)
+        const node_data = az.hold_value.clicked_node_data;
+        var res = {
+            name : node_data.name,
+            id : node_data.el.id,
+            parent : az.hold_value.events.prepare_parent_data(node_data.parent),
+            children : az.hold_value.events.prepare_child_data(node_data.children),
+            x : node_data.x,
+            y : node_data.y,
+            options : node_data.options
+        }
+        return(res)
+    },
+    prepare_parent_data : function(node_data) {
+        var res = {
+            name : node_data.name,
+            id : node_data.el.id,
+            x : node_data.x,
+            y : node_data.y,
+            options : node_data.options
+        }
+        return(res)
+    },
+    prepare_child_data : function(node_data_arr) {
+        var res = []
+        node_data_arr.forEach(function(node_data) {
+            var inner = {
+                name : node_data.name,
+                id : node_data.el.id,
+                x : node_data.x,
+                y : node_data.y,
+                options : node_data.options
+            }
+        res.push(inner)
+        })
+    return(res)
     }
 }
