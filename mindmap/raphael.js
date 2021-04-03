@@ -4,7 +4,7 @@
  * Copyright (c) 2010 Dmitry Baranovskiy (http://raphaeljs.com)
  * Licensed under the MIT (https://www.opensource.org/licenses/mit-license.php) license.
  */
-function raphael() {
+function raphael(options) {
 Raphael=function(){function m(){if(m.is(arguments[0],U)){for(var a=arguments[0],b=Aa[K](m,a.splice(0,3+m.is(a[0],O))),c=b.set(),d=0,f=a[o];d<f;d++){var e=a[d]||{};nb.test(e.type)&&c[E](b[e.type]().attr(e))}return c}return Aa[K](m,arguments)}m.version="1.4.3";var V=/[, ]+/,nb=/^(circle|rect|path|ellipse|text|image)$/,p="prototype",z="hasOwnProperty",C=document,X=window,La={was:Object[p][z].call(X,"Raphael"),is:X.Raphael};function G(){}var y="appendChild",K="apply",M="concat",Ba="createTouch"in C,s=
 "",P=" ",H="split",Ma="click dblclick mousedown mousemove mouseout mouseover mouseup touchstart touchmove touchend orientationchange touchcancel gesturestart gesturechange gestureend"[H](P),Ca={mousedown:"touchstart",mousemove:"touchmove",mouseup:"touchend"},Q="join",o="length",ca=String[p].toLowerCase,w=Math,Y=w.max,$=w.min,O="number",ea="string",U="array",N="toString",aa="fill",ob=Object[p][N],D=w.pow,E="push",ga=/^(?=[\da-f]$)/,Na=/^url\(['"]?([^\)]+?)['"]?\)$/i,pb=/^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+\s*,\s*[\d\.]+\s*,\s*[\d\.]+(?:\s*,\s*[\d\.]+)?)\s*\)|rgba?\(\s*([\d\.]+%\s*,\s*[\d\.]+%\s*,\s*[\d\.]+%(?:\s*,\s*[\d\.]+%))\s*\)|hs[bl]\(\s*([\d\.]+\s*,\s*[\d\.]+\s*,\s*[\d\.]+)\s*\)|hs[bl]\(\s*([\d\.]+%\s*,\s*[\d\.]+%\s*,\s*[\d\.]+%)\s*\))\s*$/i,
 F=w.round,W="setAttribute",A=parseFloat,da=parseInt,Da=" progid:DXImageTransform.Microsoft",pa=String[p].toUpperCase,qa={blur:0,"clip-rect":"0 0 1e9 1e9",cursor:"default",cx:0,cy:0,fill:"#fff","fill-opacity":1,font:'10px "Arial"',"font-family":'"Arial"',"font-size":"10","font-style":"normal","font-weight":400,gradient:0,height:0,href:"http://raphaeljs.com/",opacity:1,path:"M0,0",r:0,rotation:0,rx:0,ry:0,scale:"1 1",src:"",stroke:"#000","stroke-dasharray":"","stroke-linecap":"butt","stroke-linejoin":"butt",
@@ -235,20 +235,22 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
 
     this.el.click(function () {
       if (obj.activeNode) {
-     obj.activeNode.el.removeClass('active');
+     //obj.activeNode.el.removeClass('active');
         if (obj.activeNode.parent) {
-          obj.activeNode.parent.el.removeClass('activeparent');
+      //    obj.activeNode.parent.el.removeClass('activeparent');
         }
       }
       if (typeof opts.onclick === 'function') {
         opts.onclick(thisnode);
       }
       obj.activeNode = thisnode;
-      obj.activeNode.el.addClass('active');
+      //obj.activeNode.el.addClass('active');
       if (obj.activeNode.parent) {
         obj.activeNode.parent.el.addClass('activeparent');
       }
+      if(options.animate_to_center) {
       obj.root.animateToStatic();
+      }
       return false;
     });
 
@@ -560,7 +562,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
   $.fn.addNode = function (parent, name, options) {
     var obj = this[0],
       node = obj.nodes[obj.nodes.length] = new Node(obj, name, parent, options);
-    console.log(obj.root);
     obj.root.animateToStatic();
     return node;
   };
@@ -698,8 +699,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
   };
 }($));
 
-/*jslint devel: true, browser: true, continue: true, plusplus: true, indent: 2 */
-
 // load the mindmap
 $(document).ready(function() {
   // enable the mindmap in the body
@@ -730,16 +729,20 @@ $(document).ready(function() {
       size:$('a:eq(0)',this).attr('size'),
       color:$('a:eq(0)',this).attr('color'),
       onclick:function(node) {
-          alert("hello")
-        $(node.obj.activeNode.content).each(function() {
-          this.hide();
+           parent.az.hold_value.clicked_node_data = node
+      }
+    })
+        /*
+           $(node.obj.activeNode.content).each(function() {
+         // this.hide();
         });
         $(node.content).each(function() {
-          this.show();
+         // this.show();
         });
       }
     });
-    $(this).hide();
+    */
+  //  $(this).hide();
     $('>ul>li', this).each(addLI);
   };
 

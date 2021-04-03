@@ -22,11 +22,16 @@ create_azle(function() {
         "makemap.js"
     ])
 
-    setTimeout(function() {
-        raphael();
-        document.body.innerHTML = obj_to_html(data);
-    }, 2000)
-
+    az.call_once_satisfied({
+        "condition" : "typeof(raphael) !== 'undefined'",
+        "function" : function() {
+            raphael({
+                animate_to_center : false
+            });
+            document.body.innerHTML = obj_to_html(parent.az.hold_value.map_data);
+        }
+    })
+       
 })   
 
 </script>

@@ -54,10 +54,11 @@ body {
   color:white;
 }
 .js-mindmap-active .node.activeparent {
+    /*
   color:lightgray;
   padding:8px !important;
   border-width:8px !important;
-  background:#c64d44; 
+  background:#c64d44; */
 }
 .js-mindmap-active .node div {
   position: absolute;
