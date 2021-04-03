@@ -1,80 +1,64 @@
-var data = [
-    {
-        layer : 1,
-        name : "hello",
-        id : "d9s8f7a"
-    },
-    {
-        layer : 2,
-        name : "second layer",
-        id : "d9dfff7a"
-    },
-    {
-        layer : 2,
-        name : "second layer2",
-        id : "d9dfff7a"
-    },
-    {
-        layer : 2,
-        name : "second layer3",
-        id : "d9dfff7a"
-    },
-    {
-        layer : 3,
-        name : "hello",
-        id : "aa9f9gff",
-        connected_to : "d94645f7a"
-    }
-]
+var data = [{
+    layer: 1,
+    name: "hello",
+    id: "d9s8f7a"
+}, {
+    layer: 2,
+    name: "second layer1",
+    id: "35jnk354",
+    connected_to: "d9s8f7a"
+}, {
+    layer: 2,
+    name: "second layer2",
+    id: "fs0d9f9f",
+    connected_to: "d9s8f7a"
+}, {
+    layer: 2,
+    name: "second layer3",
+    id: "n78gn686n",
+    connected_to: "d9s8f7a"
+}, {
+    layer: 2,
+    name: "second layer4",
+    id: "g8f9gfg08f",
+    connected_to: "d9s8f7a"
+},
+{
+    layer: 3,
+    name: "third layer1",
+    id: "ds08d90fds",
+    connected_to: "g8f9gfg08f"
+}]
 
 function grap_by_layer(data, layer) {
     var res = [];
     data.forEach(function(obj, i) {
-        if(obj.layer === layer) {
+        if (obj.layer === layer) {
             res.push(obj)
         }
     })
-    return(res)
+    return (res)
 }
+az.hold_value.html_string = "";
 
 function obj_to_html(data) {
-    var res;
     data.forEach(function(obj, i) {
-    if(obj.layer === 1) {
-        var outer_top = "<ul>"
-        var list_item = "<li><a>" + obj.name + "</a></li>"
-        var outer_bottom = "</ul>"
-        res = outer_top + list_item + outer_bottom
-    }
-    if(obj.layer === 2) {
-        var arr_of_obj = grap_by_layer(data, 2)
         var inner = []
-        arr_of_obj.forEach(function() {
-             inner.push("<li><a>" + obj.name + "</a></li>")
+        var connected_tos = []
+        grap_by_layer(data, obj.layer).forEach(function(obj) {
+            connected_tos.push(obj.connected_to)
+            inner.push("<li><a>" + obj.name + "</a>***" + obj.id + "***" + "</li>")
         })
         var inject = "<ul>" + inner.join("") + "</ul>";
-        az.hold_value.split = res.split("</a>");
-        az.hold_value.split.splice(1, 0, "</a>" + inject);
-    }
+        if (obj.layer !== 1) {
+            az.hold_value.html_string = az.hold_value.html_string.split("***" + obj.connected_to + "***").join(inject)
+        } else {
+            var outer_top = "<ul>"
+            var list_item = "<li><a>" + obj.name + "</a>***" + obj.id + "***</li>"
+            var outer_bottom = "</ul>"
+            layer_1 = outer_top + list_item + outer_bottom
+            az.hold_value.html_string = layer_1.split("***" + "d9s8f7a" + "***").join(inject)
+        }
     })
-    res = az.hold_value.split.join("")
-
-    console.log(res)
-    
-/*
-
-    <ul>
-        <li>
-            <a>Main Topic</a>
-            <ul>
-                <li><a>Sub 2</a></li>
-                <li><a>Sub 3</a></li>
-                <li><a>Sub 4</a></li>
-                <li><a>Sub 5</a></li>
-            </ul>
-        </li>
-    </ul>
-    */
-
-return(res)
+    return (az.hold_value.html_string)
 }
