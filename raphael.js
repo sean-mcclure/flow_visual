@@ -726,7 +726,6 @@ $(document).ready(function() {
       else parentnode=parentnode.mynode;
     
     this.mynode = $('body').addNode(parentnode, $('a:eq(0)',this).text(), {
-//          href:$('a:eq(0)',this).text().toLowerCase(),
       href:$('a:eq(0)',this).attr('href'),
       size:$('a:eq(0)',this).attr('size'),
       color:$('a:eq(0)',this).attr('color'),

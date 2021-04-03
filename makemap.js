@@ -57,8 +57,15 @@ function obj_to_html(data) {
             var list_item = "<li><a>" + obj.name + "</a>***" + obj.id + "***</li>"
             var outer_bottom = "</ul>"
             layer_1 = outer_top + list_item + outer_bottom
-            az.hold_value.html_string = layer_1.split("***" + "d9s8f7a" + "***").join(inject)
+            az.hold_value.html_string = layer_1.split("***" + obj.id + "***").join(inject)
         }
     })
-    return (az.hold_value.html_string)
+
+    var fin = az.hold_value.html_string
+
+
+    fin = fin.replace(az.get_everything_before(az.hold_value.html_string.split("<a>")[1], "</a>"), "BOOK")
+
+
+    return (fin)
 }
