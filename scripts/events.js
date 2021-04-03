@@ -9,6 +9,11 @@ az.hold_value.events = {
         az.hold_value.map_data.push(new_node)
         az.reload_iframe("map_frame", 1)
         az.clear_input("node_text", 1)
+        az.hold_value.events.set_frame_height()
+    },
+    set_frame_height : function() {
+        var current_height = Number($("iframe").css("height").replace("px", ""))
+        $("iframe").css("height", (current_height + Number(az.hold_value.config.node_height.replace(/[^0-9]/g,''))).toString() + "px")
     },
     pop_modal: function() {
         az.add_modal({
@@ -62,6 +67,15 @@ az.hold_value.events = {
                     $(this).click(function() {
                         $(this).css("background", parent.az.hold_value.click_options.color)
                     })
+                })
+            }
+        })
+    },
+    set_configuration : function() {
+        Object.keys(az.hold_value.config).forEach(function(key) {
+            if(key === node_color) {
+                $("a").each(function() {
+                    $(this).css("background", Object.values(az.hold_value.config)[key])
                 })
             }
         })

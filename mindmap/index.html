@@ -37,14 +37,16 @@ create_azle(function() {
                     .css("font-size", config.node_font_size)
                     .css("background", config.node_color)
                     .css("color", config.node_font_color)
-                    .css("border", config.node_border_thickness + " " + config.node_border_style + " " + config.node_border_color)              
-                
+                    .css("border", config.node_border_thickness + " " + config.node_border_style + " " + config.node_border_color)
                     if(config.node_shadow) {
                         $(this).css("box-shadow", "2px 2px 20px black")
                     }
-                    $("svg path").attr("stroke", config.line_color);
-                
             })
+            $("svg path").attr("stroke", config.line_color);
+            $(".node")
+                .css("border-radius", config.node_border_radius)
+                .css("width", config.node_width)
+                .css("height", config.node_height)
             }, 10)
         }
     })

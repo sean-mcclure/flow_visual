@@ -26,17 +26,22 @@ az.add_layout("main_section", 1, {
     "row_class" : "top_layout_rows",
     "cell_class" : "top_layout_cells",
     "number_of_rows" : 1,
-    "number_of_columns" : 3
+    "number_of_columns" : 2
 })
 
 az.style_layout("top_layout", 1, {
     "width" : "100vw",
     "height" : "50px",
     "position" : "fixed",
+    "z-index" : "99999999999",
     "top" : 0,
     "left" : 0,
     "right" : 0,
-    "border" : 1
+    "border" : 0
+})
+
+az.all_style_layout("top_layout_cells", {
+        "background" : "#218c74"
 })
 
 az.add_layout("top_layout_cells", 1, {
@@ -59,7 +64,9 @@ az.add_input("add_node_layout_cells", 1, {
 })
 
 az.style_input("node_text", 1, {
-    "width" : "95%"
+    "width" : "95%",
+    "border" : "none",
+    "margin-left" : "10px"
 })
 
 az.add_button("add_node_layout_cells", 2, {

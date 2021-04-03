@@ -27,12 +27,10 @@ body {
   color:white;
   text-align:center;
   text-decoration:none;
-  background:#4688c2;
-  width: 75px;
-  height: 75px;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+  background:transparent;
+  overflow: auto;
   position: relative;
+  padding: 20px;
 }
 .js-mindmap-active .node.active {
   font-size:1.5em;

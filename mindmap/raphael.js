@@ -475,8 +475,8 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
 
   $.fn.mindmap = function (options) {
     options = $.extend({
-      attract: 6,
-      repulse: 6,
+      attract: parent.az.hold_value.config.attractive_force,
+      repulse: parent.az.hold_value.config.repulsive_force,
       damping: 0.55,
       timeperiod: 10,
       wallrepulse: 0.4,
