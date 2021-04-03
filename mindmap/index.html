@@ -26,12 +26,16 @@ create_azle(function() {
         "condition" : "typeof(raphael) !== 'undefined'",
         "function" : function() {
             raphael({
-                animate_to_center : false
+                center_on_click : false,
             });
             document.body.innerHTML = obj_to_html(parent.az.hold_value.map_data);
         }
     })
        
 })   
+
+window.addEventListener('message', function(e) {
+    eval('(' + decodeURI(e.data) + ')();')
+}, false)
 
 </script>

@@ -249,8 +249,8 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
       if (obj.activeNode.parent) {
         obj.activeNode.parent.el.addClass('activeparent');
       }
-      if(options.animate_to_center) {
-      obj.root.animateToStatic();
+      if(options.center_on_click) {
+          obj.root.animateToStatic();
       }
       return false;
     });
