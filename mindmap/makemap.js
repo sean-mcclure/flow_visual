@@ -28,6 +28,12 @@ var data = [{
     name: "third layer1",
     id: "ds08d90fds",
     connected_to: "g8f9gfg08f"
+},
+{
+    layer: 3,
+    name: "third layer2",
+    id: "v8d09s9f8a",
+    connected_to: "g8f9gfg08f"
 }]
 
 function grap_by_layer(data, layer) {

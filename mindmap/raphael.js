@@ -235,7 +235,7 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
 
     this.el.click(function () {
       if (obj.activeNode) {
-        obj.activeNode.el.removeClass('active');
+     obj.activeNode.el.removeClass('active');
         if (obj.activeNode.parent) {
           obj.activeNode.parent.el.removeClass('activeparent');
         }
@@ -311,8 +311,8 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
       // if: I'm not active AND my parent's not active AND my children aren't active ...
       if (this.obj.activeNode !== this && this.obj.activeNode !== this.parent && this.obj.activeNode.parent !== this) {
         // TODO hide me!
-        this.el.hide();
-        this.visible = false;
+        this.el.show(); //************************CHNAGE TO hide() to only have some open
+        this.visible = true; //************************CHNAGE TO false to hide links
       }
     } else {
       if (this.obj.activeNode === this || this.obj.activeNode === this.parent || this.obj.activeNode.parent === this) {
@@ -730,6 +730,7 @@ $(document).ready(function() {
       size:$('a:eq(0)',this).attr('size'),
       color:$('a:eq(0)',this).attr('color'),
       onclick:function(node) {
+          alert("hello")
         $(node.obj.activeNode.content).each(function() {
           this.hide();
         });
