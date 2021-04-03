@@ -143,68 +143,20 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
 
 */
 
-/*
-  Things to do:
-    - remove Lines - NO - they seem harmless enough!
-    - add better "make active" methods
-    - remove the "root node" concept.  Tie nodes to elements better, so we can check if a parent element is root
-
-    - allow progressive exploration
-      - allow easy supplying of an ajax param for loading new kids and a loader anim
-    - allow easy exploration of a ul or ol to find nodes
-    - limit to an area
-    - allow more content (div instead of an a)
-    - test multiple canvases
-    - Hidden children should not be bounded
-    - Layout children in circles
-    - Add/Edit nodes
-    - Resize event
-    - incorporate widths into the forces, so left boundaries push on right boundaries
-
-
-  Make demos:
-    - amazon explore
-    - directgov explore
-    - thesaurus
-    - themes
-
-*/
-
 (function ($) {
   'use strict';
 
-  var TIMEOUT = 4,  // movement timeout in seconds
-    CENTRE_FORCE = 3,  // strength of attraction to the centre by the active node
+  var TIMEOUT = 4, 
+    CENTRE_FORCE = 3,
     Node,
     Line;
-
-  // Define all Node related functions.
   Node = function (obj, name, parent, opts) {
     this.obj = obj;
     this.options = obj.options;
-
     this.name = name;
-    this.href = opts.href;
-    if (opts.url) {
-      this.url = opts.url;
-    }
-    if (opts.color) {
-      this.color = opts.color;
-    }
-    if (opts.size) {
-      this.size = 'size' + opts.size;
-    }
-    // else { this.size = "100px"; }
-
-
-
-    // create the element for display
-    // this.el = $('<a href="' + this.href + '" style="width: ' + this.size + '; height: ' + this.size + ';"><div><span>' + this.name + '</span></div></a>').addClass('node').addClass(this.color);
     this.el = $('<a href="' + this.href + '"><div><span>' + this.name + '</span></div></a>').addClass('node').addClass(this.color).addClass(this.size);
     this.el.id = Math.random().toString(36).slice(2)
     $('body').prepend(this.el);
-
-
     if (!parent) {
       obj.activeNode = this;
       this.el.addClass('active root');
@@ -216,8 +168,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     if (this.parent) {
       this.parent.children.push(this);
     }
-
-    // animation handling
     this.moving = false;
     this.moveTimer = 0;
     this.obj.movementStopped = false;
@@ -228,24 +178,20 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     this.dy = 0;
     this.hasPosition = false;
 
-    this.content = []; // array of content elements to display onclick;
-
+    this.content = [];
     this.el.css('position', 'absolute');
 
     var thisnode = this;
 
     this.el.click(function () {
       if (obj.activeNode) {
-     //obj.activeNode.el.removeClass('active');
         if (obj.activeNode.parent) {
-      //    obj.activeNode.parent.el.removeClass('activeparent');
         }
       }
       if (typeof opts.onclick === 'function') {
         opts.onclick(thisnode);
       }
       obj.activeNode = thisnode;
-      //obj.activeNode.el.addClass('active');
       if (obj.activeNode.parent) {
         obj.activeNode.parent.el.addClass('activeparent');
       }
@@ -256,15 +202,11 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     });
 
   };
-
-  // ROOT NODE ONLY:  control animation loop
   Node.prototype.animateToStatic = function () {
 
     clearTimeout(this.moveTimer);
-    // stop the movement after a certain time
     var thisnode = this;
     this.moveTimer = setTimeout(function () {
-      //stop the movement
       thisnode.obj.movementStopped = true;
     }, TIMEOUT * 1000);
 
@@ -276,7 +218,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     this.animateLoop();
   };
 
-  // ROOT NODE ONLY:  animate all nodes (calls itself recursively)
   Node.prototype.animateLoop = function () {
     var i, len, mynode = this;
     this.obj.canvas.clear();
@@ -292,7 +233,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     }, 10);
   };
 
-  // find the right position for this node
   Node.prototype.findEquilibrium = function () {
     var i, len, stable = true;
     stable = this.display() && stable;
@@ -302,7 +242,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     return stable;
   };
 
-  //Display this node, and its children
   Node.prototype.display = function (depth) {
     var parent = this,
       stepAngle,
@@ -311,9 +250,7 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     depth = depth || 0;
 
     if (this.visible) {
-      // if: I'm not active AND my parent's not active AND my children aren't active ...
       if (this.obj.activeNode !== this && this.obj.activeNode !== this.parent && this.obj.activeNode.parent !== this) {
-        // TODO hide me!
         this.el.show(); //************************CHNAGE TO hide() to only have some open
         this.visible = true; //************************CHNAGE TO false to hide links
       }
@@ -324,14 +261,12 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
       }
     }
     this.drawn = true;
-    // am I positioned?  If not, position me.
     if (!this.hasPosition) {
       this.x = this.options.mapArea.x / 2;
       this.y = this.options.mapArea.y / 2;
       this.el.css({'left': this.x + "px", 'top': this.y + "px"});
       this.hasPosition = true;
     }
-    // are my children positioned?  if not, lay out my children around me
     stepAngle = Math.PI * 2 / this.children.length;
     $.each(this.children, function (index) {
       if (!this.hasPosition) {
@@ -344,24 +279,15 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
         }
       }
     });
-    // update my position
     return this.updatePosition();
   };
-
-  // updatePosition returns a boolean stating whether it's been static
   Node.prototype.updatePosition = function () {
     var forces, showx, showy;
-
-    //apply accelerations
     forces = this.getForceVector();
     this.dx += forces.x * this.options.timeperiod;
     this.dy += forces.y * this.options.timeperiod;
-
-    // damp the forces
     this.dx = this.dx * this.options.damping;
     this.dy = this.dy * this.options.damping;
-
-    //ADD MINIMUM SPEEDS
     if (Math.abs(this.dx) < this.options.minSpeed) {
       this.dx = 0;
     }
@@ -371,12 +297,10 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     if (Math.abs(this.dx) + Math.abs(this.dy) === 0) {
       return true;
     }
-    //apply velocity vector
     this.x += this.dx * this.options.timeperiod;
     this.y += this.dy * this.options.timeperiod;
     this.x = Math.min(this.options.mapArea.x, Math.max(1, this.x));
     this.y = Math.min(this.options.mapArea.y, Math.max(1, this.y));
-    // display
     showx = this.x - (this.el.width() / 2);
     showy = this.y - (this.el.height() / 2) - 10;
     this.el.css({'left': showx + "px", 'top': showy + "px"});
@@ -390,8 +314,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
       fy = 0,
       nodes = this.obj.nodes,
       lines = this.obj.lines;
-
-    // Calculate the repulsive force from every other node
     for (i = 0; i < nodes.length; i++) {
       if (nodes[i] === this) {
         continue;
@@ -399,14 +321,9 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
       if (!nodes[i].visible) {
         continue;
       }
-      // Repulsive force (coulomb's law)
       x1 = (nodes[i].x - this.x);
       y1 = (nodes[i].y - this.y);
-      //adjust for variable node size
-//    var nodewidths = (($(nodes[i]).width() + this.el.width())/2);
       dist = Math.sqrt((x1 * x1) + (y1 * y1));
-//      var myrepulse = this.options.repulse;
-//      if (this.parent==nodes[i]) myrepulse=myrepulse*10;  //parents stand further away
       if (Math.abs(dist) < 500) {
         if (x1 === 0) {
           theta = Math.PI / 2;
@@ -415,31 +332,22 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
           theta = Math.atan(y1 / x1);
           xsign = x1 / Math.abs(x1);
         }
-        // force is based on radial distance
         f = (this.options.repulse * 500) / (dist * dist);
         fx += -f * Math.cos(theta) * xsign;
         fy += -f * Math.sin(theta) * xsign;
       }
     }
-
-    // add repulsive force of the "walls"
-    //left wall
     xdist = this.x + this.el.width();
     f = (this.options.wallrepulse * 500) / (xdist * xdist);
     fx += Math.min(2, f);
-    //right wall
     rightdist = (this.options.mapArea.x - xdist);
     f = -(this.options.wallrepulse * 500) / (rightdist * rightdist);
     fx += Math.max(-2, f);
-    //top wall
     f = (this.options.wallrepulse * 500) / (this.y * this.y);
     fy += Math.min(2, f);
-    //bottom wall
     bottomdist = (this.options.mapArea.y - this.y);
     f = -(this.options.wallrepulse * 500) / (bottomdist * bottomdist);
     fy += Math.max(-2, f);
-
-    // for each line, of which I'm a part, add an attractive force.
     for (i = 0; i < lines.length; i++) {
       otherend = null;
       if (lines[i].start === this) {
@@ -449,11 +357,9 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
       } else {
         continue;
       }
-      // Ignore the pull of hidden nodes
       if (!otherend.visible) {
         continue;
       }
-      // Attractive force (hooke's law)
       x1 = (otherend.x - this.x);
       y1 = (otherend.y - this.y);
       dist = Math.sqrt((x1 * x1) + (y1 * y1));
@@ -466,16 +372,12 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
           theta = Math.atan(y1 / x1);
           xsign = x1 / Math.abs(x1);
         }
-        // force is based on radial distance
         f = (this.options.attract * dist) / 10000;
         fx += f * Math.cos(theta) * xsign;
         fy += f * Math.sin(theta) * xsign;
       }
     }
-
-    // if I'm active, attract me to the centre of the area
     if (this.obj.activeNode === this) {
-      // Attractive force (hooke's law)
       otherend = this.options.mapArea;
       x1 = ((otherend.x / 2) - this.options.centreOffset - this.x);
       y1 = ((otherend.y / 2) - this.y);
@@ -488,7 +390,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
           xsign = x1 / Math.abs(x1);
           theta = Math.atan(y1 / x1);
         }
-        // force is based on radial distance
         f = (0.1 * this.options.attract * dist * CENTRE_FORCE) / 1000;
         fx += f * Math.cos(theta) * xsign;
         fy += f * Math.sin(theta) * xsign;
@@ -537,9 +438,6 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     this.el.remove();
   };
 
-
-
-  // Define all Line related functions.
   Line = function (obj, startNode, endNode) {
     this.obj = obj;
     this.options = obj.options;
@@ -572,15 +470,10 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
   };
 
   $.fn.removeNode = function (name) {
-    return this.each(function () {
-//      if (!!this.mindmapInit) return false;
-      //remove a node matching the anme
-//      alert(name+' removed');
-    });
+    return this.each(function () {});
   };
 
   $.fn.mindmap = function (options) {
-    // Define default settings.
     options = $.extend({
       attract: 6,
       repulse: 6,
@@ -617,38 +510,31 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
       $window.resize(function () {
         mindmap.animateToStatic();
       });
-
-      //canvas
       if (options.mapArea.x === -1) {
         options.mapArea.x = $window.width();
       }
       if (options.mapArea.y === -1) {
         options.mapArea.y = $window.height();
       }
-      //create drawing area
       this.canvas = Raphael(0, 0, options.mapArea.x, options.mapArea.y);
-
-      // Add a class to the object, so that styles can be applied
       $(this).addClass('js-mindmap-active');
-
-      // Add keyboard support (thanks to wadefs)
       $(this).keyup(function (event) {
         var newNode, i, activeParent = mindmap.activeNode.parent;
         switch (event.which) {
-        case 33: // PgUp
-        case 38: // Up, move to parent
+        case 33: 
+        case 38:
           if (activeParent) {
             activeParent.el.click();
           }
           break;
-        case 13: // Enter (change to insert a sibling)
-        case 34: // PgDn
-        case 40: // Down, move to first child
+        case 13: 
+        case 34: 
+        case 40: 
           if (mindmap.activeNode.children.length) {
             mindmap.activeNode.children[0].el.click();
           }
           break;
-        case 37: // Left, move to previous sibling
+        case 37: 
           if (activeParent) {
             newNode = null;
             if (activeParent.children[0] === mindmap.activeNode) {
@@ -665,7 +551,7 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
             }
           }
           break;
-        case 39: // Right, move to next sibling
+        case 39:
           if (activeParent) {
             newNode = null;
             if (activeParent.children[activeParent.children.length - 1] === mindmap.activeNode) {
@@ -682,13 +568,13 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
             }
           }
           break;
-        case 45: // Ins, insert a child
+        case 45:
           break;
-        case 46: // Del, delete this node
+        case 46:
           break;
-        case 27: // Esc, cancel insert
+        case 27:
           break;
-        case 83: // 'S', save
+        case 83:
           break;
         }
         return false;
@@ -698,12 +584,8 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
   };
 }($));
 
-// load the mindmap
 $(document).ready(function() {
-  // enable the mindmap in the body
   $('body').mindmap();
-
-  // add the data to the mindmap
   var root = $('body>ul>li').get(0).mynode = $('body').addRootNode($('body>ul>li>a').text(), {
     size:$('body>ul>li>a').attr('size'),
     color:$('body>ul>li>a').attr('color'),
@@ -726,17 +608,6 @@ $(document).ready(function() {
            parent.az.hold_value.clicked_node_data = node
       }
     })
-        /*
-           $(node.obj.activeNode.content).each(function() {
-         // this.hide();
-        });
-        $(node.content).each(function() {
-         // this.show();
-        });
-      }
-    });
-    */
-  //  $(this).hide();
     $('>ul>li', this).each(addLI);
   };
 

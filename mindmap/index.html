@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="main.css">
 </head>
     
-<body style='overflow-y:scroll'>
+<body style='visibility:hidden; overflow-y:scroll'>
     
 </body>
 
@@ -30,9 +30,9 @@ create_azle(function() {
             });
             document.body.innerHTML = obj_to_html(parent.az.hold_value.map_data);
             setTimeout(function() {
+                document.body.style.visibility = "visible";
                  const config = parent.az.hold_value.config;
             $("a").each(function() {
-                /*
                 $(this)
                     .css("font-size", config.node_font_size)
                     .css("background", config.node_color)
@@ -43,9 +43,9 @@ create_azle(function() {
                         $(this).css("box-shadow", "2px 2px 20px black")
                     }
                     $("svg path").attr("stroke", config.line_color);
-                    */
+                
             })
-            }, 500)
+            }, 10)
         }
     })
        
