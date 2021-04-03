@@ -65,10 +65,5 @@ az.hold_value.events = {
                 })
             }
         })
-    },
-    set_configuration : function() {
-        az.hold_value.config.forEach(function() {
-            
-        })
     }
 }

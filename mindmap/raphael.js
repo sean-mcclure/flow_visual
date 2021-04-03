@@ -553,9 +553,7 @@ U)?[0][M](b):arguments;a&&m.is(a,ea)&&c[o]-1&&(a=a[I](Jb,function(d,f){return c[
     if (!this.options.showSublines && (!this.start.visible || !this.end.visible)) {
       return;
     }
-    this.size = (this.start.visible && this.end.visible) ? "thick" : "thin";
-    this.color = (this.obj.activeNode.parent === this.start || this.obj.activeNode.parent === this.end) ? "red" : "blue";
-    this.strokeStyle = "#000";
+    this.strokeStyle = parent.az.hold_value.config.line_color;
 
     this.obj.canvas.path("M" + this.start.x + ' ' + this.start.y + "L" + this.end.x + ' ' + this.end.y).attr({'stroke': this.strokeStyle, 'opacity': 1, 'stroke-width': '2px'});
   };
@@ -707,8 +705,6 @@ $(document).ready(function() {
 
   // add the data to the mindmap
   var root = $('body>ul>li').get(0).mynode = $('body').addRootNode($('body>ul>li>a').text(), {
-    href:'/',
-    url:'/',
     size:$('body>ul>li>a').attr('size'),
     color:$('body>ul>li>a').attr('color'),
     onclick:function(node) {
@@ -726,9 +722,6 @@ $(document).ready(function() {
       else parentnode=parentnode.mynode;
     
     this.mynode = $('body').addNode(parentnode, $('a:eq(0)',this).text(), {
-      href:$('a:eq(0)',this).attr('href'),
-      size:$('a:eq(0)',this).attr('size'),
-      color:$('a:eq(0)',this).attr('color'),
       onclick:function(node) {
            parent.az.hold_value.clicked_node_data = node
       }
